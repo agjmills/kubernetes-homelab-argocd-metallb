@@ -1,4 +1,12 @@
+global:
+  domain: argo.asdfx.us
+
+configs:
+  params:
+    server.insecure: true
+
 server:
-  service:
-    type: LoadBalancer  # Expose the ArgoCD server using a LoadBalancer
+  ingress:
+    enabled: true
+    tls: false
 
