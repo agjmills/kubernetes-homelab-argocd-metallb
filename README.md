@@ -32,17 +32,21 @@ helm repo add argo https://argoproj.github.io/argo-helm
 helm install argocd argo/argo-cd --namespace argocd --create-namespace -f argo/values.yaml
 ```
 
-Get the default admin password for ArgoCD:
+## Access ArgoCD UI
+
+Get the default admin password for ArgoCD from the secret:
 ```
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
-Get the allocated IP address for the ArgoCD Load Balancer:
+Get the allocated IP address for the ingress that you defined:
 ```
-kubectl get service -n argocd
+alex@lab:~$ kubectl get ingress -n argocd
+NAME                 CLASS     HOSTS           ADDRESS         PORTS   AGE
+argocd-server        traefik   argo.asdfx.us   192.168.0.200   80      5d16h
 ```
 
-Look for a service called `argocd-server` with a Type of `LoadBalancer` and find the External-IP. You should be able to go to that IP address, and login with the username `admin` and the password you got from the penultimate step.
+Setup a DNS entry (or an entry in `/etc/hosts`) to configure your argo domain to point to the IP address for the ingress.
 
 ## Uninstallation of K3s
 You can completly uninstall k3s quickly and easily with:
